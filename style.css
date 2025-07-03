@@ -1,0 +1,337 @@
+/* style.css (經典橘色主題版) */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #FFF3E0; /* 恢復為淺橘色背景 */
+    color: #333;
+}
+
+header {
+    background-color: #FF9800; /* 恢復為經典實心橘色 */
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 200;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#game-settings,
+#quiz-management-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.setting-item label {
+    font-weight: bold;
+    color: #E65100;
+}
+
+.setting-item input, .setting-item select, .setting-item textarea {
+    padding: 10px;
+    border: 1px solid #FFCC80;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #FF9800; /* 按鈕恢復為實心橘色 */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+button:hover {
+    background-color: #FB8C00; /* 滑鼠懸停時顏色加深 */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+#game-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+}
+
+#score-board {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: rgba(255, 243, 224, 0.9);
+    backdrop-filter: blur(5px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid #FFB74D;
+    margin-bottom: 20px;
+}
+
+#player-scores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.player-score {
+    background-color: #FFFDE7;
+    border: 2px solid #FFD54F;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #F57C00;
+    transition: all 0.3s ease;
+}
+
+.player-score.current {
+    background-color: #FFB74D;
+    color: white;
+    border-color: #E65100;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#current-player-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #D84315;
+    text-align: center;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.question-card {
+    background-color: #FFB74D;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.question-card:hover {
+    background-color: #FFA726;
+    transform: translateY(-5px) scale(1.05);
+}
+
+.question-card.answered {
+    background-color: #E0E0E0;
+    color: #9E9E9E;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #FFF8E1;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 550px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.close-button {
+    color: #AAAAAA;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#multiple-choice-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin: 15px 0;
+}
+
+.mc-option-button {
+    background-color: #FFFFFF;
+    color: #E65100;
+    border: 2px solid #FFCC80;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: left;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+}
+
+.mc-option-button .katex {
+    color: inherit;
+}
+
+.mc-option-button:hover {
+    background-color: #FFF8E1;
+    border-color: #FFA726;
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.quiz-list-container {
+    list-style: none;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.quiz-list-container li {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quiz-list-container li span {
+    flex-grow: 1;
+    margin-right: 10px;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+.quiz-list-container .item-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.quiz-list-container .item-actions button {
+    background-color: #bbb;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.add-question-button {
+    background: #28a745;
+}
+.add-question-button:hover {
+    background: #218838;
+}
+
+#edit-quiz-modal .modal-content {
+    max-height: 85vh;
+    overflow-y: auto;
+    text-align: left;
+}
+
+#add-question-to-quiz-section h3 {
+    text-align: center;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.judgment-buttons, #steal-options-container {
+    margin-top: 15px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    h1 { font-size: 1.8rem; }
+    #game-board {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 10px;
+    }
+    .question-card { font-size: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+    .setting-item { flex-direction: column; align-items: flex-start; }
+    #game-board {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: 8px;
+    }
+}
