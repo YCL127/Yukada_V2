@@ -186,6 +186,7 @@ button:hover {
     box-shadow: none;
 }
 
+/* 修改後的 modal 樣式，加入了 transition 動畫效果 */
 .modal {
     display: none;
     position: fixed;
@@ -197,8 +198,16 @@ button:hover {
     background-color: rgba(0,0,0,0.6);
     justify-content: center;
     align-items: center;
+    
+    /* 新增：動畫的基礎設定 */
+    opacity: 0; /* 預設為完全透明 */
+    transition: opacity 0.3s ease-in-out; /* 讓透明度在0.3秒內平滑變化 */
 }
 
+/* 新增 .show-modal 狀態，用來觸發顯示動畫 */
+.modal.show-modal {
+    opacity: 1; /* 當 modal 加上 show-modal class 時，變為完全不透明 */
+}
 .modal-content {
     background-color: #FFF8E1;
     padding: 30px;
