@@ -5,12 +5,12 @@ body {
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
-    background-color: #FFF3E0; /* 恢復為淺橘色背景 */
+    background-color: #FFF3E0;
     color: #333;
 }
 
 header {
-    background-color: #FF9800; /* 恢復為經典實心橘色 */
+    background-color: #FF9800;
     color: white;
     padding: 1rem 0;
     text-align: center;
@@ -68,7 +68,7 @@ main {
 }
 
 button {
-    background-color: #FF9800; /* 按鈕恢復為實心橘色 */
+    background-color: #FF9800;
     color: white;
     border: none;
     padding: 12px 25px;
@@ -82,7 +82,7 @@ button {
 }
 
 button:hover {
-    background-color: #FB8C00; /* 滑鼠懸停時顏色加深 */
+    background-color: #FB8C00;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
@@ -109,6 +109,7 @@ button:hover {
     box-sizing: border-box;
     background-color: rgba(255, 243, 224, 0.9);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -186,7 +187,6 @@ button:hover {
     box-shadow: none;
 }
 
-/* 修改後的 modal 樣式，加入了 transition 動畫效果 */
 .modal {
     display: none;
     position: fixed;
@@ -198,15 +198,12 @@ button:hover {
     background-color: rgba(0,0,0,0.6);
     justify-content: center;
     align-items: center;
-    
-    /* 新增：動畫的基礎設定 */
-    opacity: 0; /* 預設為完全透明 */
-    transition: opacity 0.3s ease-in-out; /* 讓透明度在0.3秒內平滑變化 */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-/* 新增 .show-modal 狀態，用來觸發顯示動畫 */
 .modal.show-modal {
-    opacity: 1; /* 當 modal 加上 show-modal class 時，變為完全不透明 */
+    opacity: 1;
 }
 .modal-content {
     background-color: #FFF8E1;
@@ -231,6 +228,29 @@ button:hover {
     font-weight: bold;
     cursor: pointer;
 }
+
+#question-text {
+    width: 100%;
+}
+
+#question-text img {
+    max-width: 100%;
+    height: auto;
+    max-height: 350px;
+    margin-top: 15px;
+    border-radius: 8px;
+    background-color: white;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.unit-label {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 5px 0 0 0;
+    font-style: italic;
+}
+
 
 #multiple-choice-options {
     display: flex;
@@ -326,6 +346,93 @@ button:hover {
 .judgment-buttons, #steal-options-container {
     margin-top: 15px;
 }
+
+.drawer-fieldset {
+    border: 1px solid #FFCC80;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.drawer-fieldset legend {
+    font-weight: bold;
+    color: #E65100;
+    padding: 0 10px;
+}
+.drawer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.drawer-controls input {
+    flex: 1;
+    min-width: 60px;
+}
+.drawer-controls button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    margin: 0;
+    flex-shrink: 0;
+}
+.drawer-fieldset canvas {
+    background-color: #fff;
+    border: 1px solid #FFD54F;
+    border-radius: 4px;
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
+#final-scores-display {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.player-final-score {
+    font-size: 1.2rem;
+    padding: 8px 0;
+    border-bottom: 1px solid #FFECB3;
+}
+.player-final-score:last-child {
+    border-bottom: none;
+}
+.player-final-score.winner {
+    font-weight: bold;
+    color: #E65100;
+    font-size: 1.5rem;
+}
+.player-final-score.winner::before {
+    content: '🏆 ';
+    margin-right: 8px;
+}
+
+#feedback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.next-question-button {
+    background-color: #4CAF50;
+    padding: 10px 20px;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+.next-question-button:hover {
+    background-color: #45a049;
+}
+
+.editor-feedback {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #33691e;
+}
+
 
 /* 響應式設計 */
 @media (max-width: 768px) {

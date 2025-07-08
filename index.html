@@ -5,17 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yukata</title>
     <link rel="stylesheet" href="style.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-
 </head>
 <body>
     <header>
         <h1>分組答題遊戲_Yukata</h1>
     </header>
-
     <main>
         <div id="game-settings" class="settings-section">
             <h2>遊戲設定</h2>
@@ -25,10 +22,9 @@
             </div>
             <div class="setting-item">
                 <label for="num-questions">題目數量:</label>
-                <input type="number" id="num-questions" min="5" max="20" value="10">
+                <input type="number" id="num-questions" min="5" max="30" value="10">
             </div>
             <button id="start-game-button">開始遊戲</button>
-
             <div id="quiz-management-section" class="settings-section">
                 <h3>題庫管理</h3>
                 <div class="setting-item">
@@ -48,7 +44,6 @@
                 </div>
             </div>
         </div>
-
         <div id="edit-quiz-modal" class="modal">
             <div id="add-question-to-quiz-section" class="modal-content">
                 <span class="close-button" id="close-edit-modal">&times;</span>
@@ -57,6 +52,8 @@
                     <label for="question-type-select">題目類型:</label>
                     <select id="question-type-select">
                         <option value="normal_question">標準題目</option>
+                        <option value="shape_question">圖形題</option>
+                        <option value="composite_shape">複合圖形題</option>
                         <option value="multiple_choice">選擇題</option>
                         <option value="event_card">事件卡</option>
                     </select>
@@ -64,6 +61,55 @@
                 <div id="normal-question-inputs" style="display: none;">
                     <div class="setting-item"><label for="question-input">題目:</label><textarea id="question-input" rows="3" placeholder="輸入題目內容"></textarea></div>
                     <div class="setting-item"><label for="answer-input">答案:</label><input type="text" id="answer-input" placeholder="輸入答案"></div>
+                    <div class="setting-item"><label for="image-url-input">圖片網址 (選填):</label><input type="text" id="image-url-input" placeholder="貼上圖片的網址"></div>
+                </div>
+                <div id="shape-question-inputs" style="display: none;">
+                    <div class="setting-item"><label for="shape-question-input">題目:</label><textarea id="shape-question-input" rows="3" placeholder="輸入題目內容"></textarea></div>
+                    <div class="setting-item"><label for="shape-answer-input">答案:</label><input type="text" id="shape-answer-input" placeholder="輸入答案"></div>
+                    <fieldset class="drawer-fieldset">
+                        <legend>圖形繪製器</legend>
+                        <div class="setting-item">
+                            <label for="shape-type-select">圖形類型:</label>
+                            <select id="shape-type-select">
+                                <option value="rectangle">矩形</option>
+                                <option value="number_line">數線</option>
+                            </select>
+                        </div>
+                        <div id="rectangle-controls" class="drawer-controls">
+                            <input type="number" id="drawer-width-shape" placeholder="寬度">
+                            <input type="number" id="drawer-height-shape" placeholder="高度">
+                            <input type="text" id="drawer-unit-shape" placeholder="單位(例:cm)">
+                        </div>
+                        <div id="number-line-controls" class="drawer-controls" style="display: none;">
+                             <input type="number" id="nl-start" placeholder="數線起點">
+                             <input type="number" id="nl-end" placeholder="數線終點">
+                             <input type="text" id="nl-ticks" placeholder="標示點(用,分隔)">
+                             <input type="text" id="nl-question-mark" placeholder="問題點(例:A)">
+                        </div>
+                        <button type="button" id="draw-button-shape">繪製/更新圖形</button>
+                        <canvas id="drawing-canvas-shape" width="400" height="200"></canvas>
+                    </fieldset>
+                    <div class="setting-item"><label for="shape-image-url-input">圖片網址 / Data URL:</label><input type="text" id="shape-image-url-input" placeholder="手動貼上網址或由繪製器生成"></div>
+                </div>
+                <div id="composite-shape-inputs" style="display: none;">
+                    <div class="setting-item"><label for="composite-question-input">題目:</label><textarea id="composite-question-input" rows="3" placeholder="例如：請問下圖面積為何？"></textarea></div>
+                    <div class="setting-item"><label for="composite-answer-input">答案:</label><input type="text" id="composite-answer-input" placeholder="輸入答案"></div>
+                    <div class="setting-item">
+                        <label for="composite-unit-length-input">每格代表的單位與長度:</label>
+                        <div class="drawer-controls">
+                            <input type="number" id="composite-unit-length" value="1" min="1">
+                            <input type="text" id="composite-unit-name" value="cm">
+                        </div>
+                    </div>
+                    <fieldset class="drawer-fieldset">
+                        <legend>複合圖形編輯器</legend>
+                        <canvas id="composite-shape-canvas" width="300" height="300"></canvas>
+                        <div id="composite-editor-feedback" class="editor-feedback"></div>
+                        <div class="button-group">
+                            <button type="button" id="clear-composite-button">清除選取</button>
+                        </div>
+                    </fieldset>
+                    <input type="hidden" id="composite-image-url-input">
                 </div>
                 <div id="multiple-choice-inputs" style="display: none;">
                     <div class="setting-item"><label for="mc-question-input">選擇題題目:</label><textarea id="mc-question-input" rows="3" placeholder="輸入選擇題題目內容"></textarea></div>
@@ -83,7 +129,7 @@
                     <div class="setting-item" id="event-description-container"><label for="event-description-input">事件描述:</label><textarea id="event-description-input" rows="3" placeholder="輸入事件描述"></textarea></div>
                     <div class="setting-item" id="event-points-container"><label for="event-points-input">事件點數:</label><input type="number" id="event-points-input" value="0" placeholder="正數獎勵，負數懲罰"></div>
                 </div>
-                <div class="setting-item"><label for="points-input">分數 (標準/選擇題):</label><input type="number" id="points-input" min="5" value="10"></div>
+                <div class="setting-item" id="points-input-container"><label for="points-input">分數:</label><input type="number" id="points-input" min="5" value="10"></div>
                 <div class="button-group"><button id="save-question-button">儲存題目</button><button id="cancel-add-question-button">取消</button></div>
             </div>
         </div>
@@ -97,7 +143,7 @@
             <div id="question-modal" class="modal">
                 <div class="modal-content">
                     <span class="close-button">&times;</span>
-                    <h2 id="question-text"></h2>
+                    <div id="question-text"></div>
                     <div id="multiple-choice-options" style="display: none;"></div>
                     <button id="show-answer-button">顯示答案</button>
                     <p id="correct-answer-display" style="display: none;"></p>
@@ -125,7 +171,6 @@
              <button id="restart-game-button">重新開始</button>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
