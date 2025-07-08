@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yukata</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- 加上版本號避免快取 -->
+    <link rel="stylesheet" href="style.css?v=1.0.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
 </head>
 <body>
-    <header>
+     <header>
         <h1>分組答題遊戲_Yukata</h1>
     </header>
     <main>
@@ -76,21 +77,14 @@
                             </select>
                         </div>
                         <div id="rectangle-controls" class="drawer-controls">
-                            <label for="drawer-width-shape" class="sr-only">寬度</label>
                             <input type="number" id="drawer-width-shape" placeholder="寬度">
-                            <label for="drawer-height-shape" class="sr-only">高度</label>
                             <input type="number" id="drawer-height-shape" placeholder="高度">
-                            <label for="drawer-unit-shape" class="sr-only">單位</label>
                             <input type="text" id="drawer-unit-shape" placeholder="單位(例:cm)">
                         </div>
                         <div id="number-line-controls" class="drawer-controls" style="display: none;">
-                             <label for="nl-start" class="sr-only">數線起點</label>
                              <input type="number" id="nl-start" placeholder="數線起點">
-                             <label for="nl-end" class="sr-only">數線終點</label>
                              <input type="number" id="nl-end" placeholder="數線終點">
-                             <label for="nl-ticks" class="sr-only">標示點</label>
                              <input type="text" id="nl-ticks" placeholder="標示點(用,分隔)">
-                             <label for="nl-question-mark" class="sr-only">問題點</label>
                              <input type="text" id="nl-question-mark" placeholder="問題點(例:A)">
                         </div>
                         <button type="button" id="draw-button-shape">繪製/更新圖形</button>
@@ -102,10 +96,9 @@
                     <div class="setting-item"><label for="composite-question-input">題目:</label><textarea id="composite-question-input" rows="3" placeholder="例如：請問下圖面積為何？"></textarea></div>
                     <div class="setting-item"><label for="composite-answer-input">答案:</label><input type="text" id="composite-answer-input" placeholder="輸入答案"></div>
                     <div class="setting-item">
-                        <label for="composite-unit-length">每格代表的單位與長度:</label>
+                        <label for="composite-unit-length-input">每格代表的單位與長度:</label>
                         <div class="drawer-controls">
                             <input type="number" id="composite-unit-length" value="1" min="1">
-                            <label for="composite-unit-name" class="sr-only">單位名稱</label>
                             <input type="text" id="composite-unit-name" value="cm">
                         </div>
                     </div>
@@ -180,5 +173,6 @@
         </div>
     </div>
     <script src="script.js"></script>
+
 </body>
 </html>
