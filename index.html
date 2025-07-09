@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yukata</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -46,7 +47,7 @@
         </div>
         <div id="edit-quiz-modal" class="modal">
             <div id="add-question-to-quiz-section" class="modal-content">
-                <span class="close-button" id="close-edit-modal">&times;</span>
+                <button class="close-button" id="close-edit-modal" aria-label="關閉編輯視窗">&times;</button>
                 <h3>新增/編輯題目</h3>
                 <div class="setting-item">
                     <label for="question-type-select">題目類型:</label>
@@ -76,14 +77,21 @@
                             </select>
                         </div>
                         <div id="rectangle-controls" class="drawer-controls">
+                            <label for="drawer-width-shape" class="visually-hidden">寬度</label>
                             <input type="number" id="drawer-width-shape" placeholder="寬度">
+                            <label for="drawer-height-shape" class="visually-hidden">高度</label>
                             <input type="number" id="drawer-height-shape" placeholder="高度">
+                            <label for="drawer-unit-shape" class="visually-hidden">單位</label>
                             <input type="text" id="drawer-unit-shape" placeholder="單位(例:cm)">
                         </div>
                         <div id="number-line-controls" class="drawer-controls" style="display: none;">
+                             <label for="nl-start" class="visually-hidden">數線起點</label>
                              <input type="number" id="nl-start" placeholder="數線起點">
+                             <label for="nl-end" class="visually-hidden">數線終點</label>
                              <input type="number" id="nl-end" placeholder="數線終點">
+                             <label for="nl-ticks" class="visually-hidden">標示點(用,分隔)</label>
                              <input type="text" id="nl-ticks" placeholder="標示點(用,分隔)">
+                             <label for="nl-question-mark" class="visually-hidden">問題點(例:A)</label>
                              <input type="text" id="nl-question-mark" placeholder="問題點(例:A)">
                         </div>
                         <button type="button" id="draw-button-shape">繪製/更新圖形</button>
@@ -95,9 +103,11 @@
                     <div class="setting-item"><label for="composite-question-input">題目:</label><textarea id="composite-question-input" rows="3" placeholder="例如：請問下圖面積為何？"></textarea></div>
                     <div class="setting-item"><label for="composite-answer-input">答案:</label><input type="text" id="composite-answer-input" placeholder="輸入答案"></div>
                     <div class="setting-item">
-                        <label for="composite-unit-length-input">每格代表的單位與長度:</label>
+                        <p class="setting-label">每格代表的單位與長度:</p>
                         <div class="drawer-controls">
+                            <label for="composite-unit-length" class="visually-hidden">單位長度</label>
                             <input type="number" id="composite-unit-length" value="1" min="1">
+                            <label for="composite-unit-name" class="visually-hidden">單位名稱</label>
                             <input type="text" id="composite-unit-name" value="cm">
                         </div>
                     </div>
@@ -142,7 +152,7 @@
             <div id="game-board"></div>
             <div id="question-modal" class="modal">
                 <div class="modal-content">
-                    <span class="close-button">&times;</span>
+                    <button class="close-button" aria-label="關閉問題視窗">&times;</button>
                     <div id="question-text"></div>
                     <div id="multiple-choice-options" style="display: none;"></div>
                     <button id="show-answer-button">顯示答案</button>
@@ -151,7 +161,7 @@
                         <button id="mark-correct-button" class="judgment-button correct-button">正確</button>
                         <button id="mark-incorrect-button" class="judgment-button incorrect-button">錯誤</button>
                     </div>
-                    <div id="timer-display" style="font-size: 1.8rem; color: #D84315; font-weight: bold; margin-top: 20px;"></div>
+                    <div id="timer-display"></div>
                     <div id="steal-options-container" class="button-group" style="display: none;"></div>
                     <div id="feedback" style="margin-top: 15px;"></div>
                 </div>
@@ -165,7 +175,7 @@
 
     <div id="final-score-modal" class="modal">
         <div class="modal-content">
-             <span class="close-button" id="close-final-score-modal">&times;</span>
+             <button class="close-button" id="close-final-score-modal" aria-label="關閉最終得分視窗">&times;</button>
              <h2>遊戲結束！最終得分</h2>
              <div id="final-scores-display"></div>
              <button id="restart-game-button">重新開始</button>

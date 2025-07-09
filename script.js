@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         questionTypeSelect.value = questionToEdit ? questionToEdit.type : type;
         
-        canvasShape.getContext('2d').clearRect(0, 0, canvasShape.width, canvasShape.height);
+        canvasShape.getContext('2d').clearRect(0, 0, canvasShape.width, canvasHeight);
         
         if (type === 'shape_question') {
             shapeTypeSelect.dispatchEvent(new Event('change'));
