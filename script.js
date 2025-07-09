@@ -403,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         questionTypeSelect.value = questionToEdit ? questionToEdit.type : type;
         
-        canvasShape.getContext('2d').clearRect(0, 0, canvasShape.width, canvasHeight);
+        canvasShape.getContext('2d').clearRect(0, 0, canvasShape.width, canvasShape.height);
         
         if (type === 'shape_question') {
             shapeTypeSelect.dispatchEvent(new Event('change'));
@@ -690,20 +690,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- START: MODIFIED FUNCTION ---
     function handleAnswer(isCorrect, points, cardIndex, question = null, answeringPlayerIndex = currentPlayerIndex) {
         clearInterval(questionTimer);
         timerDisplay.style.display = 'none';
+
+        const currentQuestion = currentQuestions[cardIndex]; // Always get the current question object
 
         if (isCorrect) {
             players[answeringPlayerIndex].score += points;
             feedbackElement.innerHTML = `<span style="color: green; font-weight: bold;">玩家 ${answeringPlayerIndex + 1} 回答正確！獲得 ${points} 點。</span>`;
         } else {
-            feedbackElement.innerHTML = `<span style="color: red; font-weight: bold;">玩家 ${answeringPlayerIndex + 1} 回答錯誤。</span>`;
+            // If incorrect, determine the correct answer and display it.
+            let correctAnswerText = '';
+            if (currentQuestion.type === 'multiple_choice') {
+                const correctOption = currentQuestion.options[currentQuestion.correct_answer_index];
+                correctAnswerText = `正確答案是：${correctOption}`;
+            } else {
+                correctAnswerText = `正確答案是：${currentQuestion.answer}`;
+            }
+            
+            feedbackElement.innerHTML = `
+                <span style="color: red; font-weight: bold;">玩家 ${answeringPlayerIndex + 1} 回答錯誤。</span>
+                <span style="font-weight: bold; margin-top: 5px;">${correctAnswerText}</span>
+            `;
         }
         updatePlayerInfo();
         markCardAsAnswered(cardIndex);
         showNextStepButton();
     }
+    // --- END: MODIFIED FUNCTION ---
 
     function applyEventCardEffect(eventCard) {
         const player = players[currentPlayerIndex];
