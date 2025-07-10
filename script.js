@@ -10,6 +10,8 @@ let selectedQuizId = 'default';
 let currentQuiz = { name: '預設題庫', questions: [] };
 let questionTimer = null;
 let isStealable = false;
+let gameCountdownTime = 30;
+let isStealEnabled = true; // 新增：搶答機制開關變數
 
 let compositeEditorState = {
     canvas: null,
@@ -235,6 +237,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const startGameButton = document.getElementById('start-game-button');
     const numPlayersInput = document.getElementById('num-players');
     const numQuestionsInput = document.getElementById('num-questions');
+    const countdownTimeInput = document.getElementById('countdown-time');
+    const enableStealAnswerCheckbox = document.getElementById('enable-steal-answer');
     const gameSettings = document.getElementById('game-settings');
     const gameContainer = document.getElementById('game-container');
     const currentPlayerDisplay = document.getElementById('current-player-display');
@@ -526,6 +530,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeGame() {
         const numPlayers = parseInt(numPlayersInput.value);
         const numQuestions = parseInt(numQuestionsInput.value);
+        gameCountdownTime = parseInt(countdownTimeInput.value) || 30;
+        isStealEnabled = enableStealAnswerCheckbox.checked;
         if (numPlayers < 1) { alert("玩家數量至少需要1位。"); return; }
         players = Array.from({ length: numPlayers }, (_, i) => ({ id: i, score: 0 }));
         currentPlayerIndex = 0; answeredQuestions.clear();
@@ -582,30 +588,36 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        timerDisplay.style.display = 'block';
-        let timeLeft = 30;
-        timerDisplay.textContent = `剩餘時間：${timeLeft}`;
-        questionTimer = setInterval(() => {
-            timeLeft--;
+        // --- START: MODIFIED LOGIC ---
+        if (isStealEnabled) {
+            timerDisplay.style.display = 'block';
+            let timeLeft = gameCountdownTime;
             timerDisplay.textContent = `剩餘時間：${timeLeft}`;
-            if (timeLeft <= 0) { 
-                clearInterval(questionTimer);
-                timerDisplay.textContent = "時間到！";
-                feedbackElement.innerHTML = '<span style="color: blue;">時間到！開放全員搶答！</span>';
-                isStealable = true;
-                showAnswerButton.style.display = 'none';
-                judgmentButtons.style.display = 'none';
-                multipleChoiceOptionsContainer.querySelectorAll('button').forEach(b => { b.onclick = null; b.disabled = true; });
-                stealOptionsContainer.style.display = 'flex';
-                stealOptionsContainer.innerHTML = '';
-                players.forEach((player, index) => {
-                    const stealPlayerButton = document.createElement('button');
-                    stealPlayerButton.textContent = `玩家 ${index + 1} 搶答`;
-                    stealPlayerButton.onclick = () => { handleSteal(question, cardIndex, index); };
-                    stealOptionsContainer.appendChild(stealPlayerButton);
-                });
-             }
-        }, 1000);
+            questionTimer = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `剩餘時間：${timeLeft}`;
+                if (timeLeft <= 0) { 
+                    clearInterval(questionTimer);
+                    timerDisplay.textContent = "時間到！";
+                    feedbackElement.innerHTML = '<span style="color: blue;">時間到！開放全員搶答！</span>';
+                    isStealable = true;
+                    showAnswerButton.style.display = 'none';
+                    judgmentButtons.style.display = 'none';
+                    multipleChoiceOptionsContainer.querySelectorAll('button').forEach(b => { b.onclick = null; b.disabled = true; });
+                    stealOptionsContainer.style.display = 'flex';
+                    stealOptionsContainer.innerHTML = '';
+                    players.forEach((player, index) => {
+                        const stealPlayerButton = document.createElement('button');
+                        stealPlayerButton.textContent = `玩家 ${index + 1} 搶答`;
+                        stealPlayerButton.onclick = () => { handleSteal(question, cardIndex, index); };
+                        stealOptionsContainer.appendChild(stealPlayerButton);
+                    });
+                }
+            }, 1000);
+        } else {
+            timerDisplay.style.display = 'none';
+        }
+        // --- END: MODIFIED LOGIC ---
 
         questionTextElement.innerHTML = '';
         const questionParagraph = document.createElement('p');
@@ -690,18 +702,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- START: MODIFIED FUNCTION ---
     function handleAnswer(isCorrect, points, cardIndex, question = null, answeringPlayerIndex = currentPlayerIndex) {
         clearInterval(questionTimer);
         timerDisplay.style.display = 'none';
 
-        const currentQuestion = currentQuestions[cardIndex]; // Always get the current question object
+        const currentQuestion = currentQuestions[cardIndex];
 
         if (isCorrect) {
             players[answeringPlayerIndex].score += points;
             feedbackElement.innerHTML = `<span style="color: green; font-weight: bold;">玩家 ${answeringPlayerIndex + 1} 回答正確！獲得 ${points} 點。</span>`;
         } else {
-            // If incorrect, determine the correct answer and display it.
             let correctAnswerText = '';
             if (currentQuestion.type === 'multiple_choice') {
                 const correctOption = currentQuestion.options[currentQuestion.correct_answer_index];
@@ -719,7 +729,6 @@ document.addEventListener('DOMContentLoaded', () => {
         markCardAsAnswered(cardIndex);
         showNextStepButton();
     }
-    // --- END: MODIFIED FUNCTION ---
 
     function applyEventCardEffect(eventCard) {
         const player = players[currentPlayerIndex];

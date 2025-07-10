@@ -25,11 +25,17 @@
                 <label for="num-questions">題目數量:</label>
                 <input type="number" id="num-questions" min="5" max="30" value="10">
             </div>
+            <div class="setting-item-checkbox">
+                <input type="checkbox" id="enable-steal-answer" checked>
+                <label for="enable-steal-answer">開啟搶答機制</label>
+            </div>
             <div class="setting-item">
                 <label for="countdown-time">每題秒數:</label>
                 <input type="number" id="countdown-time" min="5" value="30">
             </div>
-            <button id="start-game-button">開始遊戲</button>
+            <div class="button-group">
+                <button id="start-game-button">開始遊戲</button>
+            </div>
             <div id="quiz-management-section" class="settings-section">
                 <h3>題庫管理</h3>
                 <div class="setting-item">
